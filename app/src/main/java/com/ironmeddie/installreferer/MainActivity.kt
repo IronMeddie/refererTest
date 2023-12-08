@@ -192,7 +192,6 @@ class MainActivity : ComponentActivity() {
                         }) {
                             Text(text = "get appmetrica params")
                         }
-
                         Spacer(modifier = Modifier.height(24.dp))
                     }
 
