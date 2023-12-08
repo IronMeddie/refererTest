@@ -6,18 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -95,7 +90,7 @@ class MainActivity : ComponentActivity() {
                             "appInstallTime: " + appInstallTime + "\n"
                             "instantExperienceLaunched: " + instantExperienceLaunched
                             referrerClient.endConnection()
-                        }catch (e: Exception){
+                        } catch (e: Exception) {
                             installReferer.value = e.message.toString()
                         }
 
@@ -103,28 +98,32 @@ class MainActivity : ComponentActivity() {
 
                     LazyColumn(
                         modifier = Modifier
-                            .fillMaxSize()
+                            .fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
 
+                        item {
+                            Text(
+                                text = error.value,
+                                color = Color.Red,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 21.dp)
+                            )
+                            Spacer(modifier = Modifier.height(34.dp))
+                        }
 
-                        item {                         Text(
-                            text = error.value,
-                            color = Color.Red,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 21.dp)
-                        )
-                            Spacer(modifier = Modifier.height(34.dp)) }
-
-                        item {                         Text(
-                            text = installReferer.value,
-                            color = Color.Black,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 21.dp)
-                        )
-                            Spacer(modifier = Modifier.height(24.dp)) }
+                        item {
+                            Text(
+                                text = installReferer.value,
+                                color = Color.Black,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 21.dp)
+                            )
+                            Spacer(modifier = Modifier.height(24.dp))
+                        }
 
 
 
@@ -161,7 +160,7 @@ class MainActivity : ComponentActivity() {
                                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                                     startActivity(intent)
                                     error.value = "success"
-                                } catch (t: Exception) {
+                                } catch (t: Throwable) {
                                     error.value = t?.localizedMessage ?: "unknown Error"
                                 }
 
@@ -174,9 +173,11 @@ class MainActivity : ComponentActivity() {
 
 
 
-                        item {      Spacer(modifier = Modifier.height(24.dp))
+                        item {
+                            Spacer(modifier = Modifier.height(24.dp))
                             Button(onClick = {
-                                AppMetrica.requestDeferredDeeplink(object : DeferredDeeplinkListener {
+                                AppMetrica.requestDeferredDeeplink(object :
+                                    DeferredDeeplinkListener {
                                     override fun onDeeplinkLoaded(deeplink: String) {
                                         appmetricaDeeplink.value = deeplink
                                     }
@@ -197,6 +198,7 @@ class MainActivity : ComponentActivity() {
                                             appmetricaDataParams.value += "key: $key value: ${parameters[key]} \n"
                                         }
                                     }
+
                                     override fun onError(
                                         error: DeferredDeeplinkParametersListener.Error,
                                         referrer: String
@@ -208,7 +210,8 @@ class MainActivity : ComponentActivity() {
                             }) {
                                 Text(text = "get appmetrica params")
                             }
-                            Spacer(modifier = Modifier.height(24.dp)) }
+                            Spacer(modifier = Modifier.height(24.dp))
+                        }
 
 
                     }
