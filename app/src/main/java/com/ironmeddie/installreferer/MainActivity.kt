@@ -89,20 +89,23 @@ class MainActivity : ComponentActivity() {
                         val appmetricaDataParams = rememberSaveable { mutableStateOf("") }
                         val appmetricaDeeplink = rememberSaveable { mutableStateOf("") }
 
-                        LaunchedEffect(key1 = referrerClient.isReady) {
-                            if (referrerClient.isReady){
-                            val response: ReferrerDetails = referrerClient.installReferrer
-                            val referrerUrl: String = response.installReferrer
-                            val referrerClickTime: Long = response.referrerClickTimestampSeconds
-                            val appInstallTime: Long = response.installBeginTimestampSeconds
-                            val instantExperienceLaunched: Boolean = response.googlePlayInstantParam
+                        LaunchedEffect(key1 = true) {
+                            try {
+                                val response: ReferrerDetails = referrerClient.installReferrer
+                                val referrerUrl: String = response.installReferrer
+                                val referrerClickTime: Long = response.referrerClickTimestampSeconds
+                                val appInstallTime: Long = response.installBeginTimestampSeconds
+                                val instantExperienceLaunched: Boolean = response.googlePlayInstantParam
 
-                            installReferer.value = referrerUrl + "\n\n\n" +
-                                    "referrerClickTime: " + referrerClickTime + "\n"
-                            "appInstallTime: " + appInstallTime + "\n"
-                            "instantExperienceLaunched: " + instantExperienceLaunched
-                            referrerClient.endConnection()
+                                installReferer.value = referrerUrl + "\n\n\n" +
+                                        "referrerClickTime: " + referrerClickTime + "\n"
+                                "appInstallTime: " + appInstallTime + "\n"
+                                "instantExperienceLaunched: " + instantExperienceLaunched
+                                referrerClient.endConnection()
+                            }catch (e: Exception){
+                                installReferer.value = e.message.toString()
                             }
+
                         }
 
                         Text(
