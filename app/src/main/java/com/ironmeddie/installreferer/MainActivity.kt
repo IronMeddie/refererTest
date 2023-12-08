@@ -90,6 +90,7 @@ class MainActivity : ComponentActivity() {
                         val appmetricaDeeplink = rememberSaveable { mutableStateOf("") }
 
                         LaunchedEffect(key1 = referrerClient.isReady) {
+                            if (referrerClient.isReady){
                             val response: ReferrerDetails = referrerClient.installReferrer
                             val referrerUrl: String = response.installReferrer
                             val referrerClickTime: Long = response.referrerClickTimestampSeconds
@@ -101,6 +102,7 @@ class MainActivity : ComponentActivity() {
                             "appInstallTime: " + appInstallTime + "\n"
                             "instantExperienceLaunched: " + instantExperienceLaunched
                             referrerClient.endConnection()
+                            }
                         }
 
                         Text(
@@ -180,7 +182,6 @@ class MainActivity : ComponentActivity() {
                                         appmetricaDataParams.value += "key: $key value: ${parameters[key]} \n"
                                     }
                                 }
-
                                 override fun onError(
                                     error: DeferredDeeplinkParametersListener.Error,
                                     referrer: String
