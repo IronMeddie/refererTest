@@ -71,5 +71,4 @@ dependencies {
 
     //appMetrica
     implementation("io.appmetrica.analytics:analytics:6.1.0")
-    implementation("com.android.installreferrer:installreferrer:2.2")
 }
